@@ -1,4 +1,3 @@
-
 const express = require('express')
 const bodyParser = require('body-parser');
 const app = express()
@@ -9,17 +8,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 const registerUsingCognito = require('./registration/registerUser');
-const uploadFilesToS3 = require('./s3_bucket/uploadfileonbucket');
-const retrieveFilesFromS3 = require('./s3_bucket/retrievefilesList');
-const deleteFilesFromS3 = require('./s3_bucket/deleteFileFromBucket');
 const verifyUser = require('./registration/verifyUser')
 const signInUser = require('./registration/signInUser')
+const getUserDetails = require('./registration/cognitoUserDetails')
+
+const uploadFilesToS3 = require('./s3_bucket/uploadfileonbucket');
+const deleteFilesFromS3 = require('./s3_bucket/deleteFileFromBucket');
+
 const insertIntoDB = require('./database/databaseHandler')
 const retrieveFilesFromDB = require('./database/retrieveFromDB')
 const updateFilesInDB = require('./database/updateDB')
-const insertIntoUserTable = require('./database/createUserTable')
-const retrieveUsersFromDB = require('./database/retrieveAllUserFromDB')
-const getUserDetails = require('./registration/cognitoUserDetails')
 const deleteFilesInDB = require('./database/deleteEntries')
 
 app.post('/register', function (req, res) {
@@ -74,13 +72,25 @@ app.post('/signIn', function (req, res) {
         console.log(TAG + " SignIn Failed");
         console.log(error.statusCode);
         console.log(error.response);
+        res.send({status: 200, invalid: true})
+    }).catch(() => {
+        res.send();
+    });
+});
+
+app.get('/cognito/users', function (req, res) {
+    console.log("Call For Cognito Users");
+    const response =  getUserDetails();
+    response.then((response)=>{
+        res.send(response);
+    },(error)=>{
         res.send(error);
     }).catch(() => {
         res.send();
     });
 });
 
-
+// S3 Related Fetch
 app.post('/upload', function (req, res) {
     console.log("Post Upload Request");
     const response = uploadFilesToS3();
@@ -98,7 +108,19 @@ app.post('/upload', function (req, res) {
     });
 });
 
-app.post('/insert', function (req, res) {
+app.delete('/delete', function (req, res) {
+    console.log("Delete Request");
+    const response =  deleteFilesFromS3(req.body.folder,req.body.name);
+    response.then((response)=>{
+        res.send(response);
+    },(error)=>{
+        res.send(error);
+    }).catch(() => {
+        res.send();
+    });
+});
+
+app.post('/db/insert', function (req, res) {
     console.log("Post Insert Request");
     //const response = insertIntoDB(req.body.email,req.body.bucket,req.body.key,req.body.location);
     const response = insertIntoDB(req.body);
@@ -116,7 +138,7 @@ app.post('/insert', function (req, res) {
     });
 });
 
-app.post('/retrieve', function (req, res) {
+app.post('/db/retrieve', function (req, res) {
     console.log("Post Retrieve Request");
     //const response =  retrieveFilesFromS3();
     const response = retrieveFilesFromDB(req.body.email);
@@ -129,71 +151,9 @@ app.post('/retrieve', function (req, res) {
     });
 });
 
-app.post('/create/users', function (req, res) {
-    console.log("Post Create Users Request");
-    const response = insertIntoUserTable();
-    response.then((response)=>{
-        res.send(response);
-    },(error)=>{
-        res.send(error);
-    }).catch(() => {
-        res.send();
-    });
-});
-
-app.post('/retrieve/users', function (req, res) {
-    console.log("Post Retrieve Users Request");
-    const response = retrieveUsersFromDB();
-    response.then((response)=>{
-        res.send(response);
-    },(error)=>{
-        res.send(error);
-    }).catch(() => {
-        res.send();
-    });
-});
-
-app.post('/update', function (req, res) {
+app.post('/db/update', function (req, res) {
     console.log("POST Update Request");
     const response = updateFilesInDB(req.body.updateTime,req.body.description,res.body.userId);
-    response.then((response)=>{
-        res.send(response);
-    },(error)=>{
-        res.send(error);
-    }).catch(() => {
-        res.send();
-    });
-});
-
-app.delete('/delete', function (req, res) {
-    console.log("Delete Request");
-    const response =  deleteFilesFromS3(req.body.name);
-    response.then((response)=>{
-        res.send(response);
-    },(error)=>{
-        res.send(error);
-    }).catch(() => {
-        res.send();
-    });
-});
-
-//admin calls
-
-app.get('/cognitoUsers', function (req, res) {
-    console.log("Call For Cognito Users");
-    const response =  getUserDetails();
-    response.then((response)=>{
-        res.send(response);
-    },(error)=>{
-        res.send(error);
-    }).catch(() => {
-        res.send();
-    });
-});
-
-app.post('/user/files', function (req, res) {
-    console.log("Call To Fetch User Files");
-    const response =  getUserDetails();
     response.then((response)=>{
         res.send(response);
     },(error)=>{
@@ -214,8 +174,6 @@ app.delete('/db/delete', function (req, res) {
         res.send();
     });
 });
-
-
 
 const server = app.listen(3000);
 

@@ -5,8 +5,8 @@ const TAG = 'verifyUser';
 
 AWS.config.update({
     region: config.region,
-    accessKeyId: config.iamUserCustomer.accessKeyId,
-    secretAccessKey: config.iamUserCustomer.secretAccessKey
+    accessKeyId: config.awsUser.accessKeyId,
+    secretAccessKey: config.awsUser.secretAccessKey
 });
 
 

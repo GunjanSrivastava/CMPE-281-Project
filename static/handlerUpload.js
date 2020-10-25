@@ -33,9 +33,9 @@
             }));
         }
 
-        function insertIntoDb(bucket,key,location){
-            console.log(TAG + "Executing Insert Into DB...");
-
+        function insertIntoDb(bucket,key,loc){
+            console.log("Executing Insert Into DB...");
+            key = key.substring(key.indexOf('/')+1);
             const fName = window.localStorage.getItem('firstName');
             const lName = window.localStorage.getItem('lastName');
             const email = window.localStorage.getItem('email');
@@ -54,13 +54,13 @@
                email : email,
                bucket : bucket,
                key : key,
-               location : location,
+               location : loc,
                uploadTime : uploadTime,
                updateTime : updateTime,
                desc: desc
            }
 
-            fetch('/insert' , {
+            fetch('/db/insert' , {
                 method : 'post',
                 body : JSON.stringify(newUser),
                 headers: {
@@ -73,8 +73,9 @@
                     })
                 ).then(response => {
                     if(response.status === 200){
-                        console.log(TAG + " Insert Success");
+                        console.log(" Insert Success");
                         console.log(response.files);
+                        location.reload();
                     }
                     else{
                         console.log("Insert Failed");

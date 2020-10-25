@@ -1,6 +1,6 @@
 (function(){
     const email = window.localStorage.getItem('email');
-    fetch('/retrieve' , {
+    fetch('/db/retrieve' , {
         method : 'post',
         body : JSON.stringify({email: email}),
         headers: {

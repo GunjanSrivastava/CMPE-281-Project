@@ -4,7 +4,7 @@
 
         console.log("Started...")
 
-        fetch('/cognitoUsers' ,{
+        fetch('/cognito/users' ,{
             method : 'get',
             headers: {
                 'content-type': 'application/json'
@@ -72,7 +72,10 @@
         function tableClick(row) {
             console.log(row);
             const email = row.getElementsByTagName('td')[2].innerHTML;
+            const folder = row.getElementsByTagName('td')[0].innerHTML;
+            console.log(folder);
             window.localStorage.setItem('selectedUser', email);
+            window.localStorage.setItem('selectedUserFirstName' , folder);
             window.location.replace("http://localhost:3000/adminUserFileDetails.html");
         }
         console.log("Table Updated...");

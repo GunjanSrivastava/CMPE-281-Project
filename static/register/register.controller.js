@@ -6,23 +6,33 @@
     const enterCodeFld = $('#enterCodeFld');
     const submitCodeBtn = $('#submitCodeBtn');
     const registerBtn = $('#registerBtn');
-    const signInBtn = $('#signInBtn');
+    const signUpBtn = $('#signUpBtn');
+    const registrationUnaccessAlert = $('#register-unsuccess');
+    const verifyPasswordFld = $('#verifyPassword');
+    const successAlert = $('#register-success');
+    const verifyUnsuccessAlert = $('#verify-unsuccess');
+
+    let username;
 
     registerBtn.click(register);
     submitCodeBtn.click(verifyCode);
-    signInBtn.click(signIn);
+    signUpBtn.click(register);
 
-    let userName;
-    let password;
-    let emailAddress;
     const TAG = 'HandleRegister';
 
     function register(){
         console.log(TAG + "Executing Register...")
         const firstName = firstNameFld.val();
         const lastName = lastNameFld.val();
-        emailAddress = emailAddressFld.val();
-        password = passwordFld.val();
+        const emailAddress = emailAddressFld.val();
+        const password = passwordFld.val();
+        const verifyPassword = verifyPasswordFld.val();
+        registrationUnaccessAlert.hide();
+        if(password!=verifyPassword){
+            registrationUnaccessAlert.html('Registration unsuccessful. Entered passwords does not match');
+            registrationUnaccessAlert.show();
+            return;
+        }
 
         fetch('/register' , {
             method : 'post',
@@ -41,6 +51,8 @@
                 console.log(response.status);
 
                 userName = response.files.user.username;
+                successAlert.html("Verification Code has been sent to your registered email address. Please enter to proceed.")
+                successAlert.show();
                 if(response.status === 200){
                     console.log(response.files);
                 }
@@ -52,6 +64,8 @@
 
     function verifyCode(){
         console.log(TAG + "Executing Verify...");
+        successAlert.hide();
+        verifyUnsuccessAlert.hide();
         const code = enterCodeFld.val();
         fetch('/verify' , {
             method : 'post',
@@ -74,6 +88,8 @@
                 }
                 else{
                     console.log(TAG + "Verification Failed");
+                    verifyUnsuccessAlert.html("Incorrect verification code provided.")
+                    verifyUnsuccessAlert.show();
                 }
             }));
     }
@@ -91,7 +107,5 @@
             alert("You have entered an invalid email address!")
             return false
         }
-
-    function validatePassword(password){}
 })();
 

@@ -1,0 +1,12 @@
+#register-unsuccess {
+    display: none;
+}
+#register-success {
+    display: none;
+}
+#verify-unsuccess {
+    display: none;
+}
+#verify-div {
+    display: none;
+}

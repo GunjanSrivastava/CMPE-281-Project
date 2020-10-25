@@ -8,8 +8,6 @@
     <label id="user_name">Welcome</label>
 
     <div class="form-group row">
-<!--        <label  class="col-sm-2 col-form-label">-->
-<!--            Upload Files </label>-->
         <button type="button" class="btn btn-primary" id="uploadBtn">Upload</button>
     </div>
 
@@ -19,7 +17,7 @@
 
     <div>
 
-        <table class="table" id="listFilesTable">
+        <table class="table table-striped table-hover" id="listFilesTable">
             <thead>
             <tr>
                 <th scope="col">File Name</th>
@@ -31,27 +29,8 @@
             </tr>
             </thead>
         </table>
-
-    </div>
-    <div class="form-group row">
-        <label  class="col-sm-2 col-form-label">
-            List Files </label>
-        <button type="button" class="btn btn-primary" id="listFilesBtn">List Files</button>
     </div>
 
-    <div class="form-group row">
-        <label  class="col-sm-2 col-form-label">
-            Download </label>
-        <button type="button" class="btn btn-primary" id="downloadBtn">Download</button>
-    </div>
-
-    <div class="form-group row">
-        <label  class="col-sm-2 col-form-label">
-            Delete </label>
-        <button type="button" class="btn btn-primary" id="deleteBtn">Delete</button>
-    </div>
-
-    <a id="downloadLink" href=""> Download </a>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -59,8 +38,6 @@
         crossorigin="anonymous"></script>
 <script src="handlerUpload.js"></script>
 <script src="handlerRetrieveFiles.js"></script>
-<script src="handlerDownloadFiles.js"></script>
-<script src="handlerDeleteFile.js"></script>
 
 </body>
 </html>

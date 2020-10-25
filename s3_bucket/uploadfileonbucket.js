@@ -3,15 +3,15 @@ const config = require('../config');
 const TAG = 'UploadFileOnBucket';
 AWS.config.update({
     region: config.region,
-    accessKeyId: config.iamUserCustomer.accessKeyId,
-    secretAccessKey: config.iamUserCustomer.secretAccessKey
+    accessKeyId: config.awsUser.accessKeyId,
+    secretAccessKey: config.awsUser.secretAccessKey
 });
 
 const s3 = new AWS.S3({apiVersion: config.s3.apiVersion});
 const uploadFilesToS3= () => {
     console.log(TAG + " Upload Files...");
     const file = '/Users/gunjansrivastava/masters/CloudProject/drawables/test.txt';
-    //const folder_name = "Gunjan";
+    const folder_name = "Gunjan";
     const uploadParams = {
         Bucket: config.s3.bucketName,
         ACL : 'public-read',
@@ -19,15 +19,16 @@ const uploadFilesToS3= () => {
         Body: ''};
     const fs = require('fs');
     const fileStream = fs.createReadStream(file);
-
+    console.log("Gunjan");
+    console.log(fileStream);
     fileStream.on('error', function(err) {
         console.log('File Error', err);
     });
 
     uploadParams.Body = fileStream;
     const path = require('path');
-    //uploadParams.Key = folder_name+'/' +path.basename(file);
-    uploadParams.Key = path.basename(file);
+    uploadParams.Key = folder_name+'/' +path.basename(file);
+    //uploadParams.Key = path.basename(file);
 
     console.log(uploadParams.Body);
     console.log(uploadParams.Key);

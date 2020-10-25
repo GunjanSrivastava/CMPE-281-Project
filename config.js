@@ -9,12 +9,8 @@ module.exports = {
         apiVersion: '2006-03-01',
         objectUrl: 'https://project-cmpe-281.s3-us-west-2.amazonaws.com/'
     },
-    iamUserCustomer: {
-      accessKeyId: 'AKIA2WJK7WPQ4BF3Q5Z3',
-      secretAccessKey: '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'
-    },
-    iamUserAdmin: {
-        accessKeyId: 'AKIA2WJK7WPQUQWVBCJU',
-        secretAccessKey: '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'
+    awsUser: {
+      accessKeyId: 'AKIAI5YZ55ECFZSYXR5A',
+      secretAccessKey: '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'
     }
 };

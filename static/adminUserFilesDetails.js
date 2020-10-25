@@ -2,8 +2,8 @@
     const TAG = "Fetch User File Details..."
     console.log("Started...")
     const email = window.localStorage.getItem('selectedUser');
-
-    fetch('/retrieve' ,{
+    const folder = window.localStorage.getItem('selectedUserFirstName');
+    fetch('/db/retrieve' ,{
         method : 'post',
         body : JSON.stringify({email : email}),
         headers: {
@@ -80,13 +80,14 @@
             console.log(row);
             //const name = row.getElementsByTagName('td')[2].innerHTML;
             window.localStorage.setItem('selectedFile', name);
+            //deleteFromDB('gunjan.186@gmail.com Gunjan/upload.png');
             deleteFiles(name);
         }
 
         function deleteFiles(name){
             fetch('/delete' ,{
                 method : 'delete',
-                body : JSON.stringify({name : name}),
+                body : JSON.stringify({folder: folder , name : name}),
                 headers: {
                     'content-type': 'application/json'
                 }
