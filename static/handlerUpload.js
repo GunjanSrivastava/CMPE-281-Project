@@ -1,19 +1,19 @@
 (function(){
-    const uploadBtn = $('#uploadBtn');
+    const fileInput = $('#file-input');
     $('#welcome-user').value = window.localStorage.getItem('firstName');
-    uploadBtn.click(uploadHandler)
+    fileInput.change(uploadHandler)
 
     function uploadHandler(){
         const TAG = 'HandlerUpload';
+        let file = document.getElementById("file-input").files[0];
+        let formData = new FormData();
+        console.log(file instanceof File);
+        formData.append("file", file);
+        formData.append('folder',"Gunjan")
 
-        console.log(TAG + "Executing File Upload...");
-        console.log(window.localStorage.getItem('firstName'));
         fetch('/upload' , {
             method : 'post',
-            body : '',
-            headers: {
-                'content-type': 'application/json'
-            }
+            body :formData
         }).then(response =>
             response.json().then(data => ({
                     files: data,
@@ -23,8 +23,6 @@
                 if(response.status === 200){
                     console.log(TAG + " Upload Success");
                     console.log(response.files);
-                    // TODO : update list on page
-                    //TODO : Insert into RDS
                     insertIntoDb(response.files.Bucket,response.files.Key,response.files.Location);
                 }
                 else{

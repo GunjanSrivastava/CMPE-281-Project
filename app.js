@@ -1,11 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser');
+// const formidable = require('express-formidable');
 const app = express()
 const TAG = 'App.database';
 
 app.use(express.static('static'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+// app.use(formidable());
 
 const registerUsingCognito = require('./registration/registerUser');
 const verifyUser = require('./registration/verifyUser')
@@ -92,8 +94,9 @@ app.get('/cognito/users', function (req, res) {
 
 // S3 Related Fetch
 app.post('/upload', function (req, res) {
+    // new formidable.IncomingForm().parse(req, (err, fields, files) => {
     console.log("Post Upload Request");
-    const response = uploadFilesToS3();
+    const response = uploadFilesToS3(req.files.file , req.files.folder);
     response.then((response)=>{
         res.send(response);
         console.log(TAG + " Upload Success");

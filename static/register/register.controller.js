@@ -8,9 +8,12 @@
     const registerBtn = $('#registerBtn');
     const signUpBtn = $('#signUpBtn');
     const registrationUnaccessAlert = $('#register-unsuccess');
-    const verifyPasswordFld = $('#verifyPassword');
+    const verifyPasswordFld = $('#verifyPasswordFld');
     const successAlert = $('#register-success');
     const verifyUnsuccessAlert = $('#verify-unsuccess');
+    const registerContainer = $('#register-div');
+    const verifyContainer = $('#verify-div');
+
 
     let username;
 
@@ -53,6 +56,9 @@
                 userName = response.files.user.username;
                 successAlert.html("Verification Code has been sent to your registered email address. Please enter to proceed.")
                 successAlert.show();
+                registerContainer.hide();
+                verifyContainer.show();
+
                 if(response.status === 200){
                     console.log(response.files);
                 }
