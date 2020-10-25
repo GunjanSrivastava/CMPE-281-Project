@@ -80,8 +80,8 @@
             console.log(row);
             //const name = row.getElementsByTagName('td')[2].innerHTML;
             window.localStorage.setItem('selectedFile', name);
-            //deleteFromDB('gunjan.186@gmail.com Gunjan/upload.png');
-            deleteFiles(name);
+            deleteFromDB('gunjan.srivastava@sjsu.edu Gunjan/upload.png');
+            //deleteFiles(name);
         }
 
         function deleteFiles(name){

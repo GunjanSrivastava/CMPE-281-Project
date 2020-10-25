@@ -21,30 +21,23 @@
             }
         }).then(response =>
             response.json().then(data => {
-                if(response.status === 200){
-                    console.log(TAG + "SignIn Success");
-                    console.log(data);
-
-                    if (data.invalid) {
-                        $unsuccessAlert.html('Sign in unsuccessful. Incorrect credentials.');
-                        $unsuccessAlert.show();
-                    }
-                    else {
-                        window.localStorage.setItem('firstName', data.response.idToken.payload.name);
-                        window.localStorage.setItem('lastName', data.response.idToken.payload.family_name);
-                        window.localStorage.setItem('email', data.response.idToken.payload.email);
-                        if(data.response.idToken.payload.email === 'gunjan.srivastava@sjsu.edu'){
-                            window.location.replace("http://localhost:3000/admin.html");
-                        }else
-                        {
-                            window.location.replace("http://localhost:3000/dashboard.html");
-                        }
-                    }
-                }
-                else{
+                if(data.status===404) {
+                    $unsuccessAlert.html('Sign in unsuccessful. Incorrect credentials.');
+                    $unsuccessAlert.show();
                     console.log(TAG + "SignIn Failed");
+                    return;
+                }
+                console.log(TAG + "SignIn Success");
+                console.log(data);
+                window.localStorage.setItem('firstName', data.response.idToken.payload.name);
+                window.localStorage.setItem('lastName', data.response.idToken.payload.family_name);
+                window.localStorage.setItem('email', data.response.idToken.payload.email);
+                if(data.response.idToken.payload.email === 'gunjan.srivastava@sjsu.edu'){
+                    window.location.replace("http://localhost:3000/admin.html");
+                }else
+                {
+                    window.location.replace("http://localhost:3000/dashboard.html");
                 }
             }));
     }
 })();
-

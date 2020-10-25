@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser');
-// const formidable = require('express-formidable');
+const formidable = require('formidable');
 const app = express()
 const TAG = 'App.database';
 
@@ -34,9 +34,9 @@ app.post('/register', function (req, res) {
         res.send(response);
         console.log("received response in app.database");
     },(error)=>{
-        res.send(error);
+        res.send({status: 404});
     }).catch(() => {
-        res.send();
+        res.send({status: 404});
     });
 });
 
@@ -47,16 +47,16 @@ app.post('/verify', function (req, res) {
     const email = req.body.email;
     const response = verifyUser(email,code);
     response.then((response)=>{
-        res.send(response);
+        res.send({status: 200});
         console.log(TAG + " Verification Success");
         console.log(response.toString());
     },(error)=>{
         console.log(TAG + " Verification Failed");
         console.log(error.code);
         console.log(error.message);
-        res.send(error);
+        res.send({status: 404});
     }).catch(() => {
-        res.send();
+        res.send({status: 404});
     });
 });
 
@@ -74,9 +74,9 @@ app.post('/signIn', function (req, res) {
         console.log(TAG + " SignIn Failed");
         console.log(error.statusCode);
         console.log(error.response);
-        res.send({status: 200, invalid: true})
+        res.send({status: 404});
     }).catch(() => {
-        res.send();
+        res.send({status: 404});
     });
 });
 
@@ -96,18 +96,25 @@ app.get('/cognito/users', function (req, res) {
 app.post('/upload', function (req, res) {
     // new formidable.IncomingForm().parse(req, (err, fields, files) => {
     console.log("Post Upload Request");
-    const response = uploadFilesToS3(req.files.file , req.files.folder);
-    response.then((response)=>{
-        res.send(response);
-        console.log(TAG + " Upload Success");
-        console.log(response);
-    },(error)=>{
-        console.log(TAG + " Upload Failed");
-        console.log(error.statusCode);
-        console.log(error.response);
-        res.send(error);
-    }).catch(() => {
-        res.send();
+    const form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, files) {
+        console.log("Post Upload Request");
+        console.log(files);
+        console.log(files.folder);
+        console.log(fields);
+        const response = uploadFilesToS3(files.file, fields.folder);
+        response.then((response) => {
+            res.send(response);
+            console.log(TAG + " Upload Success");
+            console.log(response);
+        }, (error) => {
+            console.log(TAG + " Upload Failed");
+            console.log(error.statusCode);
+            console.log(error.response);
+            res.send(error);
+        }).catch(() => {
+            res.send();
+        });
     });
 });
 

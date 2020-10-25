@@ -8,8 +8,8 @@
         let file = document.getElementById("file-input").files[0];
         let formData = new FormData();
         console.log(file instanceof File);
-        formData.append("file", file);
-        formData.append('folder',"Gunjan")
+        formData.append('file', file);
+        formData.append('folder','Gunjan');
 
         fetch('/upload' , {
             method : 'post',

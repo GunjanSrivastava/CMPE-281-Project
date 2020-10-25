@@ -15,7 +15,7 @@
     const verifyContainer = $('#verify-div');
 
 
-    let username;
+    let userName;
 
     registerBtn.click(register);
     submitCodeBtn.click(verifyCode);
@@ -44,27 +44,21 @@
             headers: {
                 'content-type': 'application/json'
             }
-        }).then(response =>
-            response.json().then(data => ({
-                    files: data,
-                    status: response.status
-                })
-            ).then(response => {
+        }).then(data =>
+            data.json().then(response => {
+                if(response.status===404) {
+                    registrationUnaccessAlert.html('Registration unsuccessful. Something went worng.');
+                    registrationUnaccessAlert.show();
+                    console.log(TAG + "Registration Failed");
+                    return;
+                }
                 console.log(TAG + "Registration Success");
-                console.log(response.status);
 
-                userName = response.files.user.username;
+                userName = response.user.username;
                 successAlert.html("Verification Code has been sent to your registered email address. Please enter to proceed.")
                 successAlert.show();
                 registerContainer.hide();
                 verifyContainer.show();
-
-                if(response.status === 200){
-                    console.log(response.files);
-                }
-                else{
-                    console.log(TAG + "Registration Failed");
-                }
             }));
     }
 
@@ -75,21 +69,15 @@
         const code = enterCodeFld.val();
         fetch('/verify' , {
             method : 'post',
-            body : JSON.stringify({verificationCode: code , email : userName}),
+            body : JSON.stringify({verificationCode: code , email: userName}),
             headers: {
                 'content-type': 'application/json'
             }
-        }).then(response =>
-            response.json().then(data => ({
-                    files: data,
-                    status: response.status
-                })
-            ).then(response => {
-                console.log(response.status);
-                console.log(response.files);
+        }).then(data =>
+            data.json().then(response => {
                 if(response.status === 200){
                     console.log(TAG + " Verification Success");
-                    console.log(response.files);
+                    console.log(response);
                     window.location.replace("http://localhost:3000/dashboard.html");
                 }
                 else{
@@ -105,13 +93,12 @@
     }
 
     function validateEmail(mail)
+    {
+        if (/^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/.test(myForm.emailAddr.value))
         {
-            if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(myForm.emailAddr.value))
-            {
-                return true
-            }
-            alert("You have entered an invalid email address!")
-            return false
+            return true
         }
+        alert("You have entered an invalid email address!")
+        return false
+    }
 })();
-
