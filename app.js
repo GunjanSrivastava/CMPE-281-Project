@@ -187,7 +187,7 @@ app.post('/db/retrieve', function (req, res) {
 
 app.post('/db/update', function (req, res) {
     console.log("POST Update Request");
-    const response = updateFilesInDB(req.body.updateTime,req.body.desc,req.body.userId);
+    const response = updateFilesInDB(req.body.updateTime,req.body.userId);
     response.then((response)=>{
         res.send(response);
     },(error)=>{

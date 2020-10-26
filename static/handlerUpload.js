@@ -74,6 +74,7 @@
             const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
             const uploadTime = date+' '+time;
             const updateTime = date+' '+time;
+            loc = loc.replace('https://project-cmpe-281.s3.us-west-2.amazonaws.com/' , '');
             loc = 'https://d3ntls9e0ywkq1.cloudfront.net/' + loc;
             const desc = "This is the latest version";
 

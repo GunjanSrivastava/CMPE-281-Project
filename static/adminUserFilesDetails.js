@@ -1,8 +1,11 @@
 (function(){
     const TAG = "Fetch User File Details..."
     console.log("Started...")
-    const email = window.localStorage.getItem('selectedUser');
-    const folder = window.localStorage.getItem('selectedUserFirstName');
+    const email = window.localStorage.getItem('selectedEmail');
+    const user = window.localStorage.getItem('selectedUser');
+    const greeting = $('#user_name');
+    greeting.text('User: '+user);
+
     fetch('/db/retrieve' ,{
         method : 'post',
         body : JSON.stringify({email : email}),
@@ -47,13 +50,14 @@
                     var linkText = document.createTextNode("Download");
                     a.appendChild(linkText);
                     a.title = "Download";
-                    const loc = "https://d3ntls9e0ywkq1.cloudfront.net/"+objectKey;
+                    const loc = objectLocation;
                     a.href = loc;
 
                     cell.appendChild(a);
                     row.appendChild(cell);
                 }else if(j === 5){
                     var a = document.createElement('label');
+                    a.setAttribute('class', 'btn btn-primary');
                     var linkText = document.createTextNode("Delete");
                     a.appendChild(linkText);
                     a.title = "Delete";
@@ -73,7 +77,7 @@
         for (let i = 0; i < userTable.rows.length; i++) {
             userTable.rows[i].cells[5].onclick = function () {
                 const name = userTable.rows[i].getElementsByTagName('td')[0].innerHTML;
-                deleteFileClick(this ,name );
+                deleteFileClick(this ,name);
             };
         }
         function deleteFileClick(row,name) {
@@ -87,7 +91,7 @@
         function deleteFiles(name){
             fetch('/delete' ,{
                 method : 'delete',
-                body : JSON.stringify({folder: folder , name : email}),
+                body : JSON.stringify({folder: email , file : name}),
                 headers: {
                     'content-type': 'application/json'
                 }
@@ -131,4 +135,3 @@
         }
     }
 })();
-

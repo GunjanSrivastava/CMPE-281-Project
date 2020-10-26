@@ -33,10 +33,10 @@ connection.connect(function(err) {
         });
 });
 
-function updateFilesInDB(updateTime,description,userId) {
+function updateFilesInDB(updateTime,userId) {
     return new Promise((resolutionFunc, rejectionFunc) => {
-        const sql = 'UPDATE fileSystems SET updatedTime = ?, description = ? WHERE userId = ?';
-        connection.query(sql, [updateTime, description,userId], function (err, result, fields) {
+        const sql = 'UPDATE fileSystems SET updatedTime = ? WHERE userId = ?';
+        connection.query(sql, [updateTime,userId], function (err, result, fields) {
             if (err) {
                 console.log(TAG + " Retrieve Failed");
                 console.log(err);

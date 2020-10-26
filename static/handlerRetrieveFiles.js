@@ -138,13 +138,11 @@
         const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
         const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         const updateTime = date+' '+time;
-        description = 'this got updated';
         // const desc = "This is the latest version";
 
         const newUser =  {
             userId : userId,
             updateTime : updateTime,
-            desc: description
         }
 
         fetch('/db/update' , {
