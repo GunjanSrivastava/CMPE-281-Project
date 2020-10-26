@@ -33,11 +33,11 @@
                 window.localStorage.setItem('lastName', data.response.idToken.payload.family_name);
                 window.localStorage.setItem('email', data.response.idToken.payload.email);
                 if(data.response.idToken.payload.email === 'gunjan.srivastava@sjsu.edu'){
-                    window.location= "www.codewithgunjan.com/admin.html";
+                    window.location= "admin.html";
                     return;
                 }else
                 {
-                    window.location = "www.codewithgunjan.com/home.html";
+                    window.location = "home.html";
                 }
             }));
     }
