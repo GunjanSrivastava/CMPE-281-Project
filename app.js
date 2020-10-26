@@ -5,7 +5,7 @@ const app = express()
 const TAG = 'App.database';
 var session = require('express-session')
 
-app.use(express.static('static'))
+app.use(express.static('static', {index: login.html}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({

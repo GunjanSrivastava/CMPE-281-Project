@@ -74,7 +74,7 @@
             const user = row.getElementsByTagName('td')[0].innerHTML;
             window.localStorage.setItem('selectedEmail', email);
             window.localStorage.setItem('selectedUser' , user);
-            window.location = "http://localhost:3000/adminUserFileDetails.html";
+            window.location = "www.codewithgunjan.com/adminUserFileDetails.html";
         }
         console.log("Table Updated...");
     }
