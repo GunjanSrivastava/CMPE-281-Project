@@ -1,3 +1,6 @@
 .login-unsuccess {
     display: none;
 }
+#logout-div{
+    display: none;
+}

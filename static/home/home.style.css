@@ -1,0 +1,11 @@
+#upload-div{
+    padding: 15px;
+    visibility: hidden;
+}
+#file-alert{
+    margin: 15px 0px 0px 0px;
+    display: none;
+}
+.file-update{
+    display: none;
+}

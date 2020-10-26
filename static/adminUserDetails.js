@@ -76,7 +76,7 @@
             console.log(folder);
             window.localStorage.setItem('selectedUser', email);
             window.localStorage.setItem('selectedUserFirstName' , folder);
-            window.location.replace("http://localhost:3000/adminUserFileDetails.html");
+            window.location = "http://localhost:3000/adminUserFileDetails.html";
         }
         console.log("Table Updated...");
     }

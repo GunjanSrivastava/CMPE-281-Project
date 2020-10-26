@@ -1,15 +1,44 @@
 (function(){
     const fileInput = $('#file-input');
-    $('#welcome-user').value = window.localStorage.getItem('firstName');
+    const uploadBtn = $('#upload-btn');
+    const uploadDiv = $('#upload-div');
+    const fileDesc = $('#file-desc');
+    const fileAlert = $('#file-alert');
+    const greeting = $('#user_name');
+
+
+    let description;
+
+    greeting.text( 'Welcome '+window.localStorage.getItem('firstName')+',');
+    uploadBtn.click(displayFileContainer)
     fileInput.change(uploadHandler)
+    // fileInput.click(inputClick)
+
+    function inputClick(){
+        this.value = null;
+    }
+    function displayFileContainer(){
+        uploadDiv.visible();
+    }
+
+    jQuery.fn.visible = function() {
+        return this.css('visibility', 'visible');
+    };
 
     function uploadHandler(){
+        fileAlert.hide();
         const TAG = 'HandlerUpload';
-        let file = document.getElementById("file-input").files[0];
+        description = fileDesc.val();
+        if(description===''){
+            fileAlert.html('Provide file description before uploading.');
+            fileAlert.show();
+            this.value = null;
+            return;
+        }
+        let file = this.files[0];
         let formData = new FormData();
         console.log(file instanceof File);
         formData.append('file', file);
-        formData.append('folder','Gunjan');
 
         fetch('/upload' , {
             method : 'post',
@@ -24,12 +53,14 @@
                     console.log(TAG + " Upload Success");
                     console.log(response.files);
                     insertIntoDb(response.files.Bucket,response.files.Key,response.files.Location);
+                    //insertIntoDb(response.files.Bucket,response.files.Key);
                 }
                 else{
                     console.log("Upload Failed");
                 }
             }));
-        }
+        this.value = null;
+    }
 
         function insertIntoDb(bucket,key,loc){
             console.log("Executing Insert Into DB...");
@@ -42,7 +73,8 @@
             const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
             const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
             const uploadTime = date+' '+time;
-            const updateTime = null;
+            const updateTime = date+' '+time;
+            loc = 'https://d3ntls9e0ywkq1.cloudfront.net/' + loc;
             const desc = "This is the latest version";
 
            const newUser =  {
@@ -55,7 +87,7 @@
                location : loc,
                uploadTime : uploadTime,
                updateTime : updateTime,
-               desc: desc
+               desc: description
            }
 
             fetch('/db/insert' , {

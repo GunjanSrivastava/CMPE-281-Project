@@ -55,6 +55,9 @@
                 console.log(TAG + "Registration Success");
 
                 userName = response.user.username;
+                window.localStorage.setItem('firstName', firstName);
+                window.localStorage.setItem('lastName', lastName);
+                window.localStorage.setItem('email', emailAddress);
                 successAlert.html("Verification Code has been sent to your registered email address. Please enter to proceed.")
                 successAlert.show();
                 registerContainer.hide();
@@ -78,7 +81,7 @@
                 if(response.status === 200){
                     console.log(TAG + " Verification Success");
                     console.log(response);
-                    window.location.replace("http://localhost:3000/dashboard.html");
+                    window.location = "http://localhost:3000/home.html";
                 }
                 else{
                     console.log(TAG + "Verification Failed");
@@ -89,7 +92,7 @@
     }
 
     function signIn(){
-        window.location.replace("http://localhost:3000/signIn.html");
+        window.location = "http://localhost:3000/signIn.html";
     }
 
     function validateEmail(mail)

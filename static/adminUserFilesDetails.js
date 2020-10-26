@@ -80,14 +80,14 @@
             console.log(row);
             //const name = row.getElementsByTagName('td')[2].innerHTML;
             window.localStorage.setItem('selectedFile', name);
-            deleteFromDB('gunjan.srivastava@sjsu.edu Gunjan/upload.png');
-            //deleteFiles(name);
+            // deleteFromDB('gunjan.srivastava@sjsu.edu Gunjan/upload.png');
+            deleteFiles(name);
         }
 
         function deleteFiles(name){
             fetch('/delete' ,{
                 method : 'delete',
-                body : JSON.stringify({folder: folder , name : name}),
+                body : JSON.stringify({folder: folder , name : email}),
                 headers: {
                     'content-type': 'application/json'
                 }

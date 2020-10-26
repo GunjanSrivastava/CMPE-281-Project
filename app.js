@@ -3,10 +3,17 @@ const bodyParser = require('body-parser');
 const formidable = require('formidable');
 const app = express()
 const TAG = 'App.database';
+var session = require('express-session')
 
 app.use(express.static('static'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(session({
+    resave: false,
+    saveUninitialized: true,
+    secret: 'any string'
+}));
+
 // app.use(formidable());
 
 const registerUsingCognito = require('./registration/registerUser');
@@ -22,6 +29,7 @@ const retrieveFilesFromDB = require('./database/retrieveFromDB')
 const updateFilesInDB = require('./database/updateDB')
 const deleteFilesInDB = require('./database/deleteEntries')
 
+
 app.post('/register', function (req, res) {
     console.log("Received register post request" + req.body);
     const fName = req.body.firstName;
@@ -31,6 +39,8 @@ app.post('/register', function (req, res) {
     console.log("Data received inside app.database "+ fName +" " + lName +" "+ email + " " + pwd);
     const response = registerUsingCognito(fName,lName,email,pwd);
     response.then((response)=>{
+        req.session['currentUser'] = email;
+        req.session.cookie.maxAge = 1800000;
         res.send(response);
         console.log("received response in app.database");
     },(error)=>{
@@ -67,9 +77,12 @@ app.post('/signIn', function (req, res) {
     const pwd = req.body.password;
     const response = signInUser(email,pwd);
     response.then((response)=>{
+        req.session['currentUser'] = email;
+        req.session.cookie.maxAge = 1800000;
         res.send(response);
         console.log(TAG + " SignIn Success");
         console.log(response);
+        console.log('gunjan: '+email);
     },(error)=>{
         console.log(TAG + " SignIn Failed");
         console.log(error.statusCode);
@@ -102,7 +115,8 @@ app.post('/upload', function (req, res) {
         console.log(files);
         console.log(files.folder);
         console.log(fields);
-        const response = uploadFilesToS3(files.file, fields.folder);
+        console.log(req.session.currentUser);
+        const response = uploadFilesToS3(files.file, req.session.currentUser);
         response.then((response) => {
             res.send(response);
             console.log(TAG + " Upload Success");
@@ -151,7 +165,17 @@ app.post('/db/insert', function (req, res) {
 app.post('/db/retrieve', function (req, res) {
     console.log("Post Retrieve Request");
     //const response =  retrieveFilesFromS3();
-    const response = retrieveFilesFromDB(req.body.email);
+    console.log('gunjan gunjan gunjan');
+    console.log(req.session);
+    console.log(req.session['currentUser']);
+    var email;
+    if(req.body.email){
+        email = req.body.email;
+    }
+    else{
+        email = req.session['currentUser'];
+    }
+    const response = retrieveFilesFromDB(email);
     response.then((response)=>{
         res.send(response);
     },(error)=>{
@@ -163,7 +187,7 @@ app.post('/db/retrieve', function (req, res) {
 
 app.post('/db/update', function (req, res) {
     console.log("POST Update Request");
-    const response = updateFilesInDB(req.body.updateTime,req.body.description,res.body.userId);
+    const response = updateFilesInDB(req.body.updateTime,req.body.desc,req.body.userId);
     response.then((response)=>{
         res.send(response);
     },(error)=>{
@@ -183,6 +207,12 @@ app.delete('/db/delete', function (req, res) {
     }).catch(() => {
         res.send();
     });
+});
+
+app.post('/logout', function (req, res) {
+        console.log("logout");
+        req.session.destroy();
+        res.send({status: 200});
 });
 
 const server = app.listen(3000);
