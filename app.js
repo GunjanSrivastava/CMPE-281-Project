@@ -5,7 +5,8 @@ const app = express()
 const TAG = 'App.database';
 var session = require('express-session')
 
-app.use(express.static('static', {index: login.html}));
+//app.use(express.static('static', {index: login.html}));
+app.use(express.static('static'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({
@@ -44,7 +45,8 @@ app.post('/register', function (req, res) {
         res.send(response);
         console.log("received response in app.database");
     },(error)=>{
-        res.send({status: 404});
+        console.log(error.message);
+        res.send({status: 404 , error: error});
     }).catch(() => {
         res.send({status: 404});
     });
@@ -112,9 +114,9 @@ app.post('/upload', function (req, res) {
     const form = new formidable.IncomingForm();
     form.parse(req, function(err, fields, files) {
         console.log("Post Upload Request");
-        console.log(files);
-        console.log(files.folder);
-        console.log(fields);
+        // console.log(files);
+        // console.log(files.folder);
+        // console.log(fields);
         console.log(req.session.currentUser);
         const response = uploadFilesToS3(files.file, req.session.currentUser);
         response.then((response) => {

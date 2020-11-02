@@ -5,7 +5,8 @@
     const fileDesc = $('#file-desc');
     const fileAlert = $('#file-alert');
     const greeting = $('#user_name');
-
+    const uploadAlert = $('#upload_alert_msg');
+    uploadAlert.hide();
 
     let description;
 
@@ -39,7 +40,8 @@
         let formData = new FormData();
         console.log(file instanceof File);
         formData.append('file', file);
-
+        uploadAlert.html("This might take few seconds...");
+        uploadAlert.show();
         fetch('/upload' , {
             method : 'post',
             body :formData
@@ -49,6 +51,7 @@
                     status: response.status
                 })
             ).then(response => {
+                uploadAlert.hide();
                 if(response.status === 200){
                     console.log(TAG + " Upload Success");
                     console.log(response.files);

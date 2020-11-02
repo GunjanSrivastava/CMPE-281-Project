@@ -47,7 +47,8 @@
         }).then(data =>
             data.json().then(response => {
                 if(response.status===404) {
-                    registrationUnaccessAlert.html('Registration unsuccessful. Something went worng.');
+                    //registrationUnaccessAlert.html('Registration unsuccessful. Something went wrong.');
+                    registrationUnaccessAlert.html(response.error.message);
                     registrationUnaccessAlert.show();
                     console.log(TAG + "Registration Failed");
                     return;
@@ -81,7 +82,8 @@
                 if(response.status === 200){
                     console.log(TAG + " Verification Success");
                     console.log(response);
-                    window.location = "home.html";
+                    //window.location = "home.html";
+                    window.location = "http://localhost:3000/home.html";
                 }
                 else{
                     console.log(TAG + "Verification Failed");
@@ -92,7 +94,8 @@
     }
 
     function signIn(){
-        window.location = "signIn.html";
+        //window.location = "signIn.html";
+        window.location = "http://localhost:3000/signIn.html";
     }
 
     function validateEmail(mail)
