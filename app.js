@@ -5,8 +5,8 @@ const app = express()
 const TAG = 'App.database';
 var session = require('express-session')
 
-app.use(express.static('static', {index: login.html}));
-//app.use(express.static('static'));
+app.use(express.static('static', {index: 'login.html'}));
+>>>>>>> Stashed changes
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({
@@ -15,7 +15,6 @@ app.use(session({
     secret: 'any string'
 }));
 
-// app.use(formidable());
 
 const registerUsingCognito = require('./registration/registerUser');
 const verifyUser = require('./registration/verifyUser')
