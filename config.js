@@ -8,9 +8,5 @@ module.exports = {
         bucketName: 'project-cmpe-281',
         apiVersion: '2006-03-01',
         objectUrl: 'https://project-cmpe-281.s3-us-west-2.amazonaws.com/'
-    },
-    awsUser: {
-      accessKeyId: 'AKIAI5YZ55ECFZSYXR5A',
-      secretAccessKey: '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'
     }
 };
