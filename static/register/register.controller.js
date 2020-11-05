@@ -94,8 +94,8 @@
     }
 
     function signIn(){
-        //window.location = "signIn.html";
-        window.location = "http://localhost:3000/signIn.html";
+        window.location = "signIn.html";
+        //window.location = "http://localhost:3000/signIn.html";
     }
 
     function validateEmail(mail)
