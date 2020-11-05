@@ -6,7 +6,6 @@ const TAG = 'App.database';
 var session = require('express-session')
 
 app.use(express.static('static', {index: 'login.html'}));
->>>>>>> Stashed changes
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({

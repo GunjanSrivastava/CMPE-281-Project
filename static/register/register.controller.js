@@ -82,8 +82,8 @@
                 if(response.status === 200){
                     console.log(TAG + " Verification Success");
                     console.log(response);
-                    //window.location = "home.html";
-                    window.location = "http://localhost:3000/home.html";
+                    window.location = "home.html";
+                    //window.location = "http://localhost:3000/home.html";
                 }
                 else{
                     console.log(TAG + "Verification Failed");
